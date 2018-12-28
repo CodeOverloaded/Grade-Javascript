@@ -1,0 +1,86 @@
+<html>
+<head>
+<script type = "text/javascript">
+
+	var category_count = 0;
+	var total_weight = 0;
+	var total_grade = 0;
+	function addCategory(){
+		//Prompt Input 
+		var category = prompt("Enter Category Name", "");
+		var grade = prompt("Enter Current Grade for Category as Decimal", "");
+		var weight = prompt("Enter Weight of Category as Decimal", "");
+		
+		//Store Data
+		total_weight = total_weight + Number(weight);
+		total_grade = total_grade + Number((grade * weight));
+		category_count++;
+		
+		//Create HTML 
+		var table = document.getElementById("grade_table");
+		var row = table.insertRow(category_count);
+		var cell_1 = row.insertCell(0);
+		cell_1.innerHTML = category;
+		var cell_2 = row.insertCell(1);
+		cell_2.innerHTML = grade;
+		var cell_3 = row.insertCell(2);
+		cell_3.innerHTML = weight;
+		
+		var cell_4 = row.insertCell(3);
+		var btn = document.createElement("BUTTON");
+		var text = document.createTextNode("Remove");
+		btn.append(text);
+		btn.onclick = function() {deleteRow()};
+		cell_4.appendChild(btn);
+		
+		printAvg();
+	}
+	
+	function deleteRow(){
+		var td = event.target.parentNode; 
+		var tr = td.parentNode; // the row to be removed  
+		total_grade = total_grade - (tr.cells[1].innerHTML * tr.cells[2].innerHTML);
+		total_weight = total_weight - tr.cells[2].innerHTML;
+		tr.parentNode.removeChild(tr);
+		
+		printAvg();
+
+	}
+	
+	function printAvg(){
+		var average = 0;
+		var string_avg = "";
+		if(total_weight > 0){
+			average = total_grade / total_weight;
+			string_avg = (average * 100) + "%";
+		}else{
+			string_avg = "No Grades";
+		}
+		var x = document.getElementById("average_table").rows[0].cells;
+		x[1].innerHTML = string_avg;
+	}
+</script>
+</head>
+<body>
+<table border="1" id = "grade_table">
+	<tr>
+		<th> Category </th>
+		<th> Grade </th>
+		<th> Weight </th>
+	</tr>
+</table>
+
+<table id = "average_table">
+	<tr>
+		<th> Average: </th>
+		<th> </th>
+	</tr>
+</table>
+
+<form>
+	<input type="button" value = "Add Category" name = "add_category" onClick = "addCategory();">
+</form>
+<script type = "text/javascript">
+</script>
+</body>
+</html>
