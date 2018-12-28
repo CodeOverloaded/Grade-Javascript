@@ -42,19 +42,21 @@
 		total_grade = total_grade - (tr.cells[1].innerHTML * tr.cells[2].innerHTML);
 		total_weight = total_weight - tr.cells[2].innerHTML;
 		tr.parentNode.removeChild(tr);
-		
+		category_count--;
 		printAvg();
 
 	}
 	
 	function printAvg(){
-		var average = 0;
-		var string_avg = "";
-		if(total_weight > 0){
-			average = total_grade / total_weight;
-			string_avg = (average * 100) + "%";
-		}else{
+		var average = total_grade / total_weight;
+		var string_avg = (average * 100) + "%";
+		if(total_weight > 1){
+			alert("Weight > 100% delete the new row");
+			deleteRow();
+		}else if (total_weight == 0){
 			string_avg = "No Grades";
+		}else if (total_weight < 0){
+			alert("negative weight?");
 		}
 		var x = document.getElementById("average_table").rows[0].cells;
 		x[1].innerHTML = string_avg;
