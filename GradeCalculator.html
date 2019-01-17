@@ -1,40 +1,60 @@
 <html>
 <head>
 <script type = "text/javascript">
-
 	var category_count = 0;
 	var total_weight = 0;
 	var total_grade = 0;
 	function addCategory(){
 		//Prompt Input 
 		var category = prompt("Enter Category Name", "");
-		var grade = prompt("Enter Current Grade for Category as Decimal", "");
-		var weight = prompt("Enter Weight of Category as Decimal", "");
+		if(category){
+			var grade = Number(prompt("Enter Current Grade for Category as Decimal", ""));
+			if(grade){
+				var weight = Number(prompt("Enter Weight of Category as Decimal", ""));
+			}
+		}
+		//Create Data
+		if(category && grade && weight){	
+			if((weight != NaN) && (weight > 0) && (total_weight + weight <= 1) && (grade > 0)){
+			
+				total_weight = total_weight + weight;
+				total_grade = total_grade + (grade * weight);
+				category_count++;
 		
-		//Store Data
-		total_weight = total_weight + Number(weight);
-		total_grade = total_grade + Number((grade * weight));
-		category_count++;
+				//Create HTML 
+				var table = document.getElementById("grade_table");
+				var row = table.insertRow(category_count);
+				var cell_1 = row.insertCell(0);
+				cell_1.innerHTML = category;
+				var cell_2 = row.insertCell(1);
+				cell_2.innerHTML = grade;
+				var cell_3 = row.insertCell(2);
+				cell_3.innerHTML = weight;
 		
-		//Create HTML 
-		var table = document.getElementById("grade_table");
-		var row = table.insertRow(category_count);
-		var cell_1 = row.insertCell(0);
-		cell_1.innerHTML = category;
-		var cell_2 = row.insertCell(1);
-		cell_2.innerHTML = grade;
-		var cell_3 = row.insertCell(2);
-		cell_3.innerHTML = weight;
+				//Create Remove Button;
+				var cell_4 = row.insertCell(3);
+				var btn = document.createElement("BUTTON");
+				var text = document.createTextNode("Remove");
+				btn.append(text);
+				btn.onclick = function() {
+					deleteRow();
+				}
+				cell_4.appendChild(btn);
 		
-		var cell_4 = row.insertCell(3);
-		var btn = document.createElement("BUTTON");
-		var text = document.createTextNode("Remove");
-		btn.append(text);
-		btn.onclick = function() {deleteRow()};
-		cell_4.appendChild(btn);
-		
-		printAvg();
-	}
+				printAvg();
+				
+				//Errors
+				}else if(isNaN(weight)){
+					alert("enter a number of weight");
+				}else if(weight < 0){
+					alert("negative weight");
+				}else if(total_weight + weight > 1){
+					alert("weight > 1");
+				}else if(grade < 0){
+					alert("Yikes how bad did you do?");
+				}
+			}
+		}
 	
 	function deleteRow(){
 		var td = event.target.parentNode; 
@@ -50,13 +70,8 @@
 	function printAvg(){
 		var average = total_grade / total_weight;
 		var string_avg = (average * 100) + "%";
-		if(total_weight > 1){
-			alert("Weight > 100% delete the new row");
-			deleteRow();
-		}else if (total_weight == 0){
+		if (total_weight == 0){
 			string_avg = "No Grades";
-		}else if (total_weight < 0){
-			alert("negative weight?");
 		}
 		var x = document.getElementById("average_table").rows[0].cells;
 		x[1].innerHTML = string_avg;
@@ -75,7 +90,7 @@
 <table id = "average_table">
 	<tr>
 		<th> Average: </th>
-		<th> </th>
+		<th>No Grades</th>
 	</tr>
 </table>
 
