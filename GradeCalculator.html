@@ -4,13 +4,55 @@
 	var category_count = 0;
 	var total_weight = 0;
 	var total_grade = 0;
+	
+	function setCategory(){
+		return prompt("Enter Category Name");
+	}
+	
+	function setGradeInput(){
+		return prompt("Enter Current Grade for Category as Decimal");
+	}
+	
+	function setWeightInput(){
+		return prompt("Enter Current Weight for Category as Decimal");
+	}
+	
+	function getGrade(gradeInput){
+		if(Number(gradeInput)){
+			return Number(gradeInput);
+		}else{
+			alert("Please enter a number");
+			gradeInput = setGradeInput();
+			while(gradeInput !== null){
+				return getGrade(gradeInput);
+			}
+		}
+	}
+	
+	function getWeight(weightInput){
+		if(Number(weightInput)){
+			return Number(weightInput);
+		}else{
+			alert("Please enter a number");
+			weightInput = setWeightInput();
+			while(weightInput !== null){
+				return getWeight(weightInput);
+			}
+		}		
+	}
+	
 	function addCategory(){
+	
 		//Prompt Input 
-		var category = prompt("Enter Category Name", "");
+		var category = setCategory();
 		if(category){
-			var grade = Number(prompt("Enter Current Grade for Category as Decimal", ""));
+			var gradeInput = setGradeInput();
+			if(gradeInput){
+				var grade = getGrade(gradeInput);
+			}
 			if(grade){
-				var weight = Number(prompt("Enter Weight of Category as Decimal", ""));
+				var weightInput = setWeightInput();
+				var weight = getWeight(weightInput);
 			}
 		}
 		//Create Data
@@ -44,14 +86,12 @@
 				printAvg();
 				
 				//Errors
-				}else if(isNaN(weight)){
-					alert("enter a number of weight");
 				}else if(weight < 0){
-					alert("negative weight");
+					alert("negative weight. Item has been removed.");
 				}else if(total_weight + weight > 1){
-					alert("weight > 1");
+					alert("weight > 1. Item has been removed.");
 				}else if(grade < 0){
-					alert("Yikes how bad did you do?");
+					alert("Yikes how bad did you do? Item has been removed.");
 				}
 			}
 		}
