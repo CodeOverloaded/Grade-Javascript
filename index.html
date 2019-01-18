@@ -1,5 +1,6 @@
 <html>
 <head>
+<title> Grade Calculator </title>
 <script type = "text/javascript">
 	var category_count = 0;
 	var total_weight = 0;
@@ -10,11 +11,11 @@
 	}
 	
 	function setGradeInput(){
-		return prompt("Enter Current Grade for Category as Decimal");
+		return prompt("Enter Current Grade for Category as a Percent without %-sign");
 	}
 	
 	function setWeightInput(){
-		return prompt("Enter Current Weight for Category as Decimal");
+		return prompt("Enter Current Weight for Category as Percent without %-sign");
 	}
 	
 	function getGrade(gradeInput){
@@ -57,7 +58,7 @@
 		}
 		//Create Data
 		if(category && grade && weight){	
-			if((weight != NaN) && (weight > 0) && (total_weight + weight <= 1) && (grade > 0)){
+			if((weight != NaN) && (weight > 0) && (total_weight + weight <= 100) && (grade > 0)){
 			
 				total_weight = total_weight + weight;
 				total_grade = total_grade + (grade * weight);
@@ -88,8 +89,8 @@
 				//Errors
 				}else if(weight < 0){
 					alert("negative weight. Item has been removed.");
-				}else if(total_weight + weight > 1){
-					alert("weight > 1. Item has been removed.");
+				}else if(total_weight + weight > 100){
+					alert("weight > 100. Item has been removed.");
 				}else if(grade < 0){
 					alert("Yikes how bad did you do? Item has been removed.");
 				}
@@ -109,7 +110,7 @@
 	
 	function printAvg(){
 		var average = total_grade / total_weight;
-		var string_avg = (average * 100) + "%";
+		var string_avg = average + "%";
 		if (total_weight == 0){
 			string_avg = "No Grades";
 		}
